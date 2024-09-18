@@ -1,66 +1,69 @@
 let playerScore = 0;
 let computerScore = 0; // variables to keep score for player and computer
 
-function getComputerChoice () {
-    const computerSelection= ["rock", "paper", "scissors"]
+function getComputerChoice() {
+    const computerSelection = ["rock", "paper", "scissors"];
     let computerChoice = computerSelection[Math.floor(Math.random() * computerSelection.length)];
-    return computerChoice
-    } // function is for computer to automatically select its choice
+    return computerChoice;
+} // function is for computer to automatically select its choice
 
-    
-function playRound (playerSelection, computerSelection) {
+function playRound(playerSelection, computerSelection) {
     playerSelection = playerSelection.toLowerCase(); 
 
-    if (playerSelection === "paper" && computerSelection === "rock")  {
-        playerScore++
-        return  "You WIN, paper beats rock, your score has increased by 1"; 
-        }  
-        if  (playerSelection === "scissors" && computerSelection === "paper")  {
-            playerScore++
-        return  "You WIN, scissors beats paper, your score has increased by 1";
-        } 
-        if (playerSelection === "rock" && computerSelection === "scissors")  {
-            playerScore++
-        return  "You WIN, rock beats scissors, your score has increased by 1";
-        } 
-        if (playerSelection ===  computerSelection)  {
-        return "Its a TIE, you and the computer selected the same choice"
-        }
-        if (playerSelection === "paper" && computerSelection === "scissors")  {
-            computerScore++
-        return  "You LOSE, scissors beats paper, computers score has increased by 1";
-        }  
-        if  (playerSelection === "scissors" && computerSelection === "rock")  {
-            computerScore++
-        return  "You LOSE, rock beats scissors, computers score has increased by 1";
-        } 
-        if (playerSelection === "rock" && computerSelection === "paper")  {
-            computerScore++
-        return  "You LOSE, paper beats rock, computers score has increased by 1";
-        }
+    if (playerSelection === "paper" && computerSelection === "rock") {
+        playerScore++;
+        return "You WIN, paper beats rock, your score has increased by 1"; 
+    }  
+    if (playerSelection === "scissors" && computerSelection === "paper") {
+        playerScore++;
+        return "You WIN, scissors beats paper, your score has increased by 1";
     } 
-    let result;
-    function game() {
-        let userChoice = prompt("select rock,paper or scissors")
-       result = playRound (userChoice, getComputerChoice()) ;
-       console.log(result);
-       result = playRound (userChoice, getComputerChoice()) ;
-       console.log(result);
-       result = playRound (userChoice, getComputerChoice()) ;
-       console.log(result);
-       result = playRound (userChoice, getComputerChoice());
-       console.log(result);
-       result = playRound (userChoice, getComputerChoice());
-       console.log(result)
-       if (playerScore > computerScore) {
-       console.log("Player wins")
-       }
-       if (computerScore > playerScore) {
-       console.log ("Computer wins")
-       }
-       if (playerScore === computerScore) {
-       console.log ("Tie");
-       }
-       } //plays 5 rounds of the game and determines winner, loser or tie game
+    if (playerSelection === "rock" && computerSelection === "scissors") {
+        playerScore++;
+        return "You WIN, rock beats scissors, your score has increased by 1";
+    } 
+    if (playerSelection === computerSelection) {
+        return "It's a TIE, you and the computer selected the same choice";
+    }
+    if (playerSelection === "paper" && computerSelection === "scissors") {
+        computerScore++;
+        return "You LOSE, scissors beats paper, computer's score has increased by 1";
+    }  
+    if (playerSelection === "scissors" && computerSelection === "rock") {
+        computerScore++;
+        return "You LOSE, rock beats scissors, computer's score has increased by 1";
+    } 
+    if (playerSelection === "rock" && computerSelection === "paper") {
+        computerScore++;
+        return "You LOSE, paper beats rock, computer's score has increased by 1";
+    }
+} 
 
+document.getElementById('rock').addEventListener('click', () => updateGame('rock'));
+document.getElementById('paper').addEventListener('click', () => updateGame('paper'));
+document.getElementById('scissors').addEventListener('click', () => updateGame('scissors'));
+
+function updateGame(playerSelection) {
+    const computerSelection = getComputerChoice();
+    const result = playRound(playerSelection, computerSelection);
     
+    // Update the scores in the DOM
+    document.getElementById('player-score').textContent = playerScore;
+    document.getElementById('computer-score').textContent = computerScore;
+
+    // Display the result of the current round
+    document.getElementById('game-result').textContent = result;
+}
+
+document.getElementById('reset').addEventListener('click', () => {
+    playerScore = 0;
+    computerScore = 0;
+    document.getElementById('player-score').textContent = playerScore;
+    document.getElementById('computer-score').textContent = computerScore;
+    document.getElementById('game-result').textContent = 'Make your move!';
+
+    // Re-enable the buttons if necessary
+    document.getElementById('rock').disabled = false;
+    document.getElementById('paper').disabled = false;
+    document.getElementById('scissors').disabled = false;
+});
